@@ -336,6 +336,8 @@
         if (Math.abs(y - offset) < 1) { offset = y; return; }
         offset = y;
         track.style.transitionDuration = duration + "ms";
+        // Redirecting a move already in progress starts at full speed instead of easing in again.
+        track.style.transitionTimingFunction = animating ? "cubic-bezier(0.22, 1, 0.36, 1)" : "";
         track.style.transform = "translate3d(0," + (-y) + "px,0)";
         if (duration) {
           animating = true;
@@ -357,8 +359,9 @@
         if (!s.contains(document.activeElement)) s.focus({ preventScroll: true });
       }
 
+      // A gesture during a move continues from where that move is heading, so quick swipes
+      // chain section by section instead of being dropped.
       function move(dir) {
-        if (animating) return;
         var h = window.innerHeight, i = indexAt(offset), s = slides[i];
         var top = s.offsetTop, bottom = top + s.offsetHeight;
         if (dir > 0 && offset + h < bottom - 1) setOffset(Math.min(offset + h * STEP, bottom - h), true);
@@ -375,7 +378,6 @@
         if (now - lastWheel > GESTURE_GAP) { gestureUsed = false; wheelSum = 0; }
         lastWheel = now;
         if (gestureUsed) return;  // swallow the rest of this flick, including its momentum
-        if (animating) { gestureUsed = true; return; }
         wheelSum += e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerHeight : 1);
         if (Math.abs(wheelSum) >= opt("wheel", 30)) {
           gestureUsed = true;
@@ -425,10 +427,12 @@
         if (i >= 0 && i !== indexAt(offset)) goTo(i);
       });
 
-      // The browser may still try to scroll (focus, find-in-page); the transform does the moving.
-      window.addEventListener("scroll", function () {
-        if (window.scrollY !== 0) window.scrollTo(0, 0);
-      }, { passive: true });
+      // The browser may still scroll the window or <body> behind the transform (focus, find-in-page,
+      // iOS during a fast swipe); undo it so only the transform positions the page.
+      document.addEventListener("scroll", function (e) {
+        var el = e.target === document ? document.scrollingElement : e.target;
+        if (el && el.scrollTop !== 0) el.scrollTop = 0;
+      }, { capture: true, passive: true });
 
       // Keep the current slide aligned after the screen size (or the fit script) changes heights.
       var resizeTimer;

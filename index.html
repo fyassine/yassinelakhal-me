@@ -2,10 +2,486 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fraj Yassine Lakhal</title>
+<meta name="description" content="Fraj Yassine Lakhal — robotics engineer in Munich. M.Sc. Robotics, Cognition, Intelligence (TUM).">
+<meta name="robots" content="noindex">
 <link rel="canonical" href="https://yassinelakhal.tech/">
-<meta http-equiv="refresh" content="0; url=https://yassinelakhal.tech/">
-<script>location.replace("https://yassinelakhal.tech/" + location.hash)</script>
+<link rel="preload" href="fonts/dm-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/dm-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+  /* Self-hosted (no requests to Google). DM Sans is variable 100–1000; DM Mono ships 400 and 500 only. */
+  @font-face {
+    font-family: "DM Sans";
+    src: url("fonts/dm-sans-latin-wght-normal.woff2") format("woff2");
+    font-weight: 100 1000;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "DM Mono";
+    src: url("fonts/dm-mono-latin-400-normal.woff2") format("woff2");
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: "DM Mono";
+    src: url("fonts/dm-mono-latin-500-normal.woff2") format("woff2");
+    font-weight: 500;
+    font-display: swap;
+  }
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1a1a;
+    --muted: #6b6b6b;
+    --rule: #e4e4e4;
+    --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --sans: "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #111111;
+      --fg: #e8e8e8;
+      --muted: #8f8f8f;
+      --rule: #2a2a2a;
+    }
+  }
+  * { box-sizing: border-box; }
+  html {
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; scroll-snap-type: none; }
+  }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font: 14px/1.6 var(--mono);
+  }
+  main {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+  /* lvh keeps each slide at least as tall as the screen even when mobile toolbars collapse,
+     so the next section never peeks in; the fit script below sizes content to the smaller svh. */
+  .slide {
+    min-height: 100vh;
+    min-height: 100lvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 48px 0;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+  h1 { font-size: 20px; font-weight: 500; margin: 0 0 4px; letter-spacing: 0.02em; }
+  h2 { font-size: 14px; font-weight: 500; margin: 0 0 16px; color: var(--muted); }
+  h3 { font-size: 14px; font-weight: 500; margin: 0; }
+  p { margin: 0 0 12px; }
+  a { color: inherit; text-underline-offset: 3px; text-decoration-color: var(--muted); }
+  a:hover { text-decoration-color: currentColor; }
+  ul { margin: 4px 0 0; padding-left: 18px; }
+  li { margin: 2px 0; }
+  .muted { color: var(--muted); }
+  /* Running text in sans for readability; names, dates and navigation stay monospace. */
+  .intro, li, .entry p:not(.muted), #skills p:not(.muted) {
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .intro { margin-bottom: 28px; }
+  nav a { display: block; text-decoration: none; width: fit-content; }
+  nav a:hover { text-decoration: underline; }
+  section { border-top: 1px solid var(--rule); }
+  .entry { margin-bottom: 20px; }
+  .reveal {
+    font: inherit;
+    color: var(--muted);
+    background: none;
+    border: 1px dashed var(--muted);
+    padding: 0 6px;
+    margin-bottom: 4px;
+    cursor: pointer;
+  }
+  .reveal:hover { color: var(--fg); border-color: var(--fg); }
+  .top { display: inline-block; margin-top: 8px; color: var(--muted); }
+  footer { margin-top: 28px; color: var(--muted); font-size: 12px; }
+  .svh-probe { position: fixed; top: 0; height: 100vh; height: 100svh; width: 0; visibility: hidden; }
+  /* With JavaScript, the paging script below moves one section per gesture by sliding <main>
+     with a GPU transform; the page itself never scrolls, so mobile toolbars stay put and each
+     slide matches the visible screen exactly (dvh). */
+  html.paging, html.paging body { height: 100%; overflow: hidden; overscroll-behavior: none; }
+  html.paging { scroll-snap-type: none; scroll-behavior: auto; }
+  html.paging main {
+    position: relative;
+    will-change: transform;
+    transition: transform 700ms cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  html.paging .slide { min-height: 100dvh; }
+  html.paging .svh-probe { height: 100dvh; }
+  .slide:focus { outline: none; }
+  @media (max-width: 600px) {
+    .slide { padding: 20px 0; }
+    .entry { margin-bottom: 14px; }
+    h2 { margin-bottom: 12px; }
+  }
+</style>
 </head>
-<body><a href="https://yassinelakhal.tech/">yassinelakhal.tech</a></body>
+<body>
+<main>
+  <header id="top" class="slide">
+  <h1>Fraj Yassine Lakhal</h1>
+  <p class="muted">Robotics engineer · Munich, Germany</p>
+
+  <p class="intro">M.Sc. Robotics, Cognition, Intelligence at TUM.<br>
+  Robotics in medicine, ROS systems, deep learning.</p>
+
+  <nav>
+    <a href="#education">|—— education</a>
+    <a href="#experience">|—— experience</a>
+    <a href="#projects">|—— projects</a>
+    <a href="#skills">|—— skills</a>
+    <a href="#contact">|—— contact</a>
+  </nav>
+
+  <footer>yassinelakhal.tech</footer>
+  </header>
+
+  <section class="slide" id="education">
+    <h2>education</h2>
+
+    <div class="entry">
+      <h3>M.Sc. Robotics, Cognition, Intelligence</h3>
+      <p class="muted">2023 – 2026 · Technical University of Munich</p>
+      <ul>
+        <li>Focus on deep learning and robotics in medicine</li>
+        <li>Thesis at LMU Klinikum: early Alzheimer's prediction from fMRI connectivity. Graph embeddings + LSTM, 0.83 test ROC-AUC, +0.17 over the state-of-the-art BrainToken-GT</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <h3>B.Sc. Computer Science</h3>
+      <p class="muted">2020 – 2023 · Technical University of Munich</p>
+      <ul>
+        <li>Focus on economics</li>
+        <li>Thesis at Intel: SRAM repair with genetic algorithms, raising good die per wafer by 7.25% on average</li>
+      </ul>
+    </div>
+
+    <a class="top" href="#top">↑ top</a>
+  </section>
+
+  <section class="slide" id="experience">
+    <h2>experience</h2>
+
+    <div class="entry">
+      <h3>Research Assistant</h3>
+      <p class="muted">2026 – present · Klinikum rechts der Isar, TUM</p>
+      <ul>
+        <li>Multimodal CNN classifier for ENT diagnostics: 87% accuracy, 50 ms inference</li>
+        <li>Pilot deployment in 2 clinics, building a multi-center dataset</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <h3>Machine Learning &amp; Software Development</h3>
+      <p class="muted">2023 – 2025 · Intel Corp., Munich</p>
+      <ul>
+        <li>ML model for SRAM area analysis informing product decisions</li>
+        <li>RAG-based support chatbot, cut developer tickets by 50%+</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <h3>Engineering Analytics Tool Development</h3>
+      <p class="muted">2021 – 2023 · Intel Corp., Munich</p>
+      <ul>
+        <li>Migrated a Java monolith to React + Django microservices</li>
+        <li>Docker / Kubernetes CI/CD, integration time from 1 day to 1 hour</li>
+      </ul>
+    </div>
+
+    <a class="top" href="#top">↑ top</a>
+  </section>
+
+  <section class="slide" id="projects">
+    <h2>projects</h2>
+
+    <div class="entry">
+      <h3><a href="https://github.com/fyassine/_liver_ultrasound_ros">Multi-sensor tracked liver ultrasound</a></h3>
+      <p class="muted">2025 – 2026 · Chair for Computer Aided Medical Procedures</p>
+      <p>ROS 1/2 pipeline syncing 24 data feeds, with a Gazebo digital twin for sim-to-real.</p>
+    </div>
+
+    <div class="entry">
+      <h3><a href="https://github.com/fyassine/Human-Robot-Interaction">Human motion tracking for safe HRC</a></h3>
+      <p class="muted">2025 · Cyber-Physical Systems, TUM</p>
+      <p>UDP bridge streaming Vicon motion capture into ROS 2 for collision avoidance.</p>
+    </div>
+
+    <div class="entry">
+      <h3><a href="https://github.com/fyassine/3d-face-reconstruction">3D face reconstruction</a></h3>
+      <p class="muted">2024 – 2025 · Visual Computing Group, TUM</p>
+      <p>Faces from RGB-D video in C++ / OpenCV with an Intel RealSense.</p>
+    </div>
+
+    <div class="entry">
+      <h3><a href="https://github.com/fyassine/Helbling_STARTHACK25_Sonetto">Voice assistant with conversational memory</a></h3>
+      <p class="muted">2025 · START Hack, St. Gallen</p>
+      <p>Noise-isolating audio pipeline and memory layer for a service robot, built in 36 hours.</p>
+    </div>
+
+    <a class="top" href="#top">↑ top</a>
+  </section>
+
+  <section class="slide" id="skills">
+    <h2>skills</h2>
+    <p>Python, C++, ROS, RViz, Gazebo, PyTorch, OpenCV, Docker, Kubernetes, PostgreSQL, CI/CD</p>
+    <p class="muted">Arabic, French (native) · German, English (C1)</p>
+    <a class="top" href="#top">↑ top</a>
+  </section>
+
+  <section class="slide" id="contact">
+    <h2>contact</h2>
+    <p>
+      <span id="email-line" hidden><button type="button" id="email" class="reveal">show email</button><br></span>
+      <noscript>email: use LinkedIn<br></noscript>
+      <a href="https://www.linkedin.com/in/fraj-yassine-lakhal">linkedin.com/in/fraj-yassine-lakhal</a>
+    </p>
+    <a class="top" href="#top">↑ top</a>
+  </section>
+  <script>
+    // The address is only assembled after a click, so it never appears in the page source.
+    (function () {
+      var btn = document.getElementById("email");
+      var decode = function (codes) { return String.fromCharCode.apply(null, codes.slice().reverse()); };
+      document.getElementById("email-line").hidden = false;
+      btn.addEventListener("click", function () {
+        var addr = decode([104, 99, 101, 116, 46, 108, 97, 104, 107, 97, 108, 101, 110, 105, 115, 115, 97, 121, 64, 116, 99, 97, 116, 110, 111, 99]);
+        var link = document.createElement("a");
+        link.href = decode([58, 111, 116, 108, 105, 97, 109]) + addr;
+        link.textContent = addr;
+        btn.replaceWith(link);
+        link.focus();
+      }, { once: true });
+    })();
+
+    // Scale down a slide's content just enough to fit the smallest visible screen height,
+    // so on phones each section fills one screen without spilling into the next.
+    (function () {
+      var probe = document.createElement("div");
+      probe.className = "svh-probe";
+      document.body.appendChild(probe);
+      var MIN_ZOOM = 0.8;
+
+      function fit() {
+        var slides = document.querySelectorAll(".slide");
+        slides.forEach(function (slide) {
+          var parts = Array.prototype.filter.call(slide.children, function (el) { return el.tagName !== "SCRIPT"; });
+          parts.forEach(function (el) { el.style.zoom = ""; });
+          var pad = parseFloat(getComputedStyle(slide).paddingTop) * 2;
+          var room = probe.getBoundingClientRect().height - pad;
+          var height = function () {
+            return parts[parts.length - 1].getBoundingClientRect().bottom - parts[0].getBoundingClientRect().top;
+          };
+          var zoom = 1;
+          while (height() > room && zoom > MIN_ZOOM) {
+            zoom = Math.round((zoom - 0.02) * 100) / 100;
+            parts.forEach(function (el) { el.style.zoom = zoom; });
+          }
+        });
+      }
+
+      var timer;
+      window.addEventListener("resize", function () { clearTimeout(timer); timer = setTimeout(fit, 150); });
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      fit();
+    })();
+
+    // Move one section per swipe, wheel/trackpad flick or key press. The page itself never scrolls:
+    // the column of sections slides with a CSS transform transition, which the GPU animates at the
+    // screen's full refresh rate (JavaScript-driven scrolling is capped at 60 fps in Safari).
+    // window.PAGING may override the defaults: { duration: ms, swipe: px, wheel: delta }.
+    (function () {
+      var root = document.documentElement;
+      var track = document.querySelector("main");
+      var slides = Array.prototype.slice.call(document.querySelectorAll(".slide"));
+      var opt = function (key, fallback) { return (window.PAGING && window.PAGING[key]) || fallback; };
+      var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      var GESTURE_GAP = 200;  // ms of wheel silence that separates one gesture from the next
+      var STEP = 0.85;        // share of the screen to move inside a slide taller than the screen
+
+      root.classList.add("paging");
+
+      var offset = 0, animating = false, doneTimer, wheelSum = 0, lastWheel = 0, gestureUsed = false;
+
+      function indexAt(y) {
+        var i = 0;
+        slides.forEach(function (s, k) { if (s.offsetTop <= y + 2) i = k; });
+        return i;
+      }
+
+      function maxOffset() { return Math.max(0, track.offsetHeight - window.innerHeight); }
+
+      function finish() {
+        clearTimeout(doneTimer);
+        animating = false;
+      }
+
+      function setOffset(y, animate) {
+        y = Math.max(0, Math.min(maxOffset(), y));
+        var duration = animate && !reduceMotion.matches ? opt("duration", 700) : 0;
+        if (Math.abs(y - offset) < 1) { offset = y; return; }
+        offset = y;
+        track.style.transitionDuration = duration + "ms";
+        track.style.transform = "translate3d(0," + (-y) + "px,0)";
+        if (duration) {
+          animating = true;
+          clearTimeout(doneTimer);
+          doneTimer = setTimeout(finish, duration + 100);  // in case transitionend never fires
+        }
+      }
+
+      track.addEventListener("transitionend", function (e) {
+        if (e.target === track && e.propertyName === "transform") finish();
+      });
+
+      function goTo(i, fromBelow, animate) {
+        i = Math.max(0, Math.min(slides.length - 1, i));
+        var s = slides[i];
+        // Coming back up into a slide taller than the screen lands on its last screenful.
+        setOffset(fromBelow ? Math.max(s.offsetTop, s.offsetTop + s.offsetHeight - window.innerHeight) : s.offsetTop,
+                  animate !== false);
+        if (!s.contains(document.activeElement)) s.focus({ preventScroll: true });
+      }
+
+      function move(dir) {
+        if (animating) return;
+        var h = window.innerHeight, i = indexAt(offset), s = slides[i];
+        var top = s.offsetTop, bottom = top + s.offsetHeight;
+        if (dir > 0 && offset + h < bottom - 1) setOffset(Math.min(offset + h * STEP, bottom - h), true);
+        else if (dir < 0 && offset > top + 1) setOffset(Math.max(offset - h * STEP, top), true);
+        else if (i + dir >= 0 && i + dir < slides.length) goTo(i + dir, dir < 0);
+      }
+
+      slides.forEach(function (s) { s.tabIndex = -1; });
+
+      window.addEventListener("wheel", function (e) {
+        if (e.ctrlKey) return;  // pinch-zoom on trackpads
+        e.preventDefault();
+        var now = performance.now();
+        if (now - lastWheel > GESTURE_GAP) { gestureUsed = false; wheelSum = 0; }
+        lastWheel = now;
+        if (gestureUsed) return;  // swallow the rest of this flick, including its momentum
+        if (animating) { gestureUsed = true; return; }
+        wheelSum += e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? window.innerHeight : 1);
+        if (Math.abs(wheelSum) >= opt("wheel", 30)) {
+          gestureUsed = true;
+          move(wheelSum > 0 ? 1 : -1);
+        }
+      }, { passive: false });
+
+      var touch = null;
+      window.addEventListener("touchstart", function (e) {
+        touch = e.touches.length === 1 ? { x: e.touches[0].clientX, y: e.touches[0].clientY } : null;
+      }, { passive: true });
+      window.addEventListener("touchmove", function (e) {
+        if (touch && e.touches.length === 1 && e.cancelable) e.preventDefault();  // pinch-zoom stays native
+      }, { passive: false });
+      window.addEventListener("touchend", function (e) {
+        if (!touch) return;
+        var t = e.changedTouches[0], dx = touch.x - t.clientX, dy = touch.y - t.clientY;
+        touch = null;
+        if (Math.abs(dy) >= opt("swipe", 40) && Math.abs(dy) > Math.abs(dx)) move(dy > 0 ? 1 : -1);
+      });
+
+      window.addEventListener("keydown", function (e) {
+        if (e.altKey || e.ctrlKey || e.metaKey || /^(INPUT|TEXTAREA|BUTTON|SELECT)$/.test(e.target.tagName)) return;
+        var k = e.key;
+        if (k === "ArrowDown" || k === "PageDown" || (k === " " && !e.shiftKey)) move(1);
+        else if (k === "ArrowUp" || k === "PageUp" || (k === " " && e.shiftKey)) move(-1);
+        else if (k === "Home") goTo(0);
+        else if (k === "End") goTo(slides.length - 1);
+        else return;
+        e.preventDefault();
+      });
+
+      document.addEventListener("click", function (e) {
+        var a = e.target.closest && e.target.closest('a[href^="#"]');
+        var target = a && document.getElementById(a.getAttribute("href").slice(1));
+        var i = slides.indexOf(target);
+        if (i < 0) return;
+        e.preventDefault();
+        history.replaceState(null, "", a.getAttribute("href"));
+        goTo(i);
+      });
+
+      // Tabbing to a link in another section brings that section into view.
+      document.addEventListener("focusin", function (e) {
+        var s = e.target.closest && e.target.closest(".slide");
+        var i = slides.indexOf(s);
+        if (i >= 0 && i !== indexAt(offset)) goTo(i);
+      });
+
+      // The browser may still try to scroll (focus, find-in-page); the transform does the moving.
+      window.addEventListener("scroll", function () {
+        if (window.scrollY !== 0) window.scrollTo(0, 0);
+      }, { passive: true });
+
+      // Keep the current slide aligned after the screen size (or the fit script) changes heights.
+      var resizeTimer;
+      window.addEventListener("resize", function () {
+        var i = indexAt(offset);
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function () { goTo(i, false, false); }, 200);
+      });
+
+      // Open at the section named in the URL, without animating.
+      var start = slides.indexOf(document.getElementById(location.hash.slice(1)));
+      window.scrollTo(0, 0);
+      if (start > 0) goTo(start, false, false);
+    })();
+  </script>
+</main>
+
+<style>
+  .tune { position: fixed; left: 50%; bottom: 10px; transform: translateX(-50%); z-index: 10;
+          display: grid; gap: 4px; padding: 6px; background: var(--bg); border: 1px solid var(--rule);
+          border-radius: 8px; font: 12px/1.2 var(--mono); box-shadow: 0 4px 16px rgba(0,0,0,.15); }
+  .tune div { display: flex; gap: 4px; align-items: center; }
+  .tune span { color: var(--muted); width: 44px; }
+  .tune button { font: inherit; color: var(--muted); background: none; border: 1px solid var(--rule);
+                 border-radius: 4px; padding: 4px 7px; cursor: pointer; }
+  .tune button[aria-pressed="true"] { color: var(--fg); border-color: var(--fg); }
+</style>
+<div class="tune" aria-label="Scroll tuning (preview only)">
+  <div><span>speed</span>
+    <button data-k="duration" data-v="400">400</button><button data-k="duration" data-v="700">700</button>
+    <button data-k="duration" data-v="1000">1000</button><button data-k="duration" data-v="1300">1300</button></div>
+  <div><span>swipe</span>
+    <button data-k="swipe" data-v="25">light</button><button data-k="swipe" data-v="40">medium</button>
+    <button data-k="swipe" data-v="70">firm</button></div>
+</div>
+<script>
+  (function () {
+    var WHEEL = { 25: 15, 40: 30, 70: 60 };
+    var saved = {};
+    try { saved = JSON.parse(localStorage.getItem("paging-tune") || "{}"); } catch (e) {}
+    window.PAGING = { duration: saved.duration || 700, swipe: saved.swipe || 40 };
+    function apply() {
+      window.PAGING.wheel = WHEEL[window.PAGING.swipe];
+      document.querySelectorAll(".tune button").forEach(function (b) {
+        b.setAttribute("aria-pressed", String(window.PAGING[b.dataset.k]) === b.dataset.v);
+      });
+      try { localStorage.setItem("paging-tune", JSON.stringify(window.PAGING)); } catch (e) {}
+    }
+    document.querySelectorAll(".tune button").forEach(function (b) {
+      b.addEventListener("click", function () { window.PAGING[b.dataset.k] = Number(b.dataset.v); apply(); });
+    });
+    apply();
+  })();
+</script>
+</body>
 </html>
